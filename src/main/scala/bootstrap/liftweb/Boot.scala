@@ -10,12 +10,6 @@ import common._
 import http._
 import sitemap._
 import Loc._
-import mapper._
-
-import code.model._
-
-
-
 
 
 /**
@@ -33,6 +27,18 @@ class Boot {
     LiftRules.addToPackages("code")
 
     // Build SiteMap
+
+// taken from
+// http://groups.google.com/group/liftweb/browse_thread/thread/971d4617bf6678b0/4e26757d92b881c8
+    val contactViewByNickNameMenuItem
+      = Menu.param[String]("viewContact", "View Contact",  (nickName : String) => {
+                   //logger.debug("Nickname from URL: %s".format(nickName))
+                   Box( (S.param("v") openOr("ERROR")))
+                   },
+                   version => version
+                   ) / "agent-details-2"
+
+
     val entries = List(
       Menu.i("Home") / "index", 
       Menu.i("Agent Details") / "agent-details",
@@ -40,8 +46,7 @@ class Boot {
       // more complex because this menu allows anything in the
       // /static path to be visible
       Menu(Loc("Static", Link(List("static"), true, "/static/index"), 
-	       "Help"))) // :::
-    // the User management menu items
+	       "Help"), contactViewByNickNameMenuItem )) 
 
     // set the sitemap.  Note if you don't want access control for
     // each page, just comment this line out.
